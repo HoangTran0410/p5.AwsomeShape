@@ -1,5 +1,8 @@
-console.log('%c p5.%c AwsomeBox %c https://github.com/HoangTran0410/p5.AwsomeBox', 'background: #111; color: #fff', 'background: #f55c; color: #fff', '');
+let css = 'background: #111; color: #fff; font-size: 21px;';
+let css2 = 'background: #f55c; color: #fff; font-size: 21px;';
+console.log('%c p5.%c AwsomeBox %c https://github.com/HoangTran0410/p5.AwsomeBox', css, css2, '');
 
+// Global variable contain all groups
 let AwsomeGroups = {};
 
 p5.prototype.registerMethod('post', function () {
@@ -60,7 +63,7 @@ class AwsomeBox {
                 id: group,
                 boxes: [this]
             });
-            console.log(AwsomeGroups[group]);
+            // console.log(AwsomeGroups[group]);
         }
     }
 
