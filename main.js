@@ -3,29 +3,38 @@ let boxes = [];
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
+    // == AwsomeBox need this options ==
     rectMode(CENTER);
     textAlign(CENTER, CENTER);
+    // ==============================
 
     for (let i = 0; i < 10; i++) {
         let group = (i < 5 ? "1" : "2");
+
         let box = new AwsomeBox({
             group: group,
-            x: group * 350,
-            y: random(100, height - 100),
-            width: 150,
-            height: 75,
+            x: random(150, height - 150),
+            y: random(75, height - 75),
+            width: random(100, 150),
+            height: random(50, 100),
             // rotateSpeed: random(-2, 2),
             fillColor: randHexColor(),
-            cornerRadius: 100,
-            text: random(["Hoàng", "Hiền", "Hương", "Nam", "Linh", "Hợp"]) + " - " + group
+            strokeColor: "#fff9",
+            cornerRadius: random(100),
+            text: random(["Hoàng", "Hiền", "Hương", "Nam", "Linh", "Hợp"]) + " - " + group,
+            textSize: 20
         });
 
         box.onHover = function () {
             this.strokeWeight = 5;
-            this.textSize = 25;
         }
         box.onOutside = function () {
-            this.strokeWeight = 1;
+            this.strokeWeight = 0;
+        }
+        box.onPress = function() {
+            this.textSize = 18;
+        }
+        box.onRelease = function() {
             this.textSize = 20;
         }
 
