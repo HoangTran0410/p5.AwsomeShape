@@ -1,3 +1,5 @@
+console.log('%c p5.%c AwsomeBox %c https://github.com/HoangTran0410/p5.AwsomeBox', 'background: #111; color: #fff', 'background: #f55c; color: #fff', '');
+
 let AwsomeGroups = {};
 
 p5.prototype.registerMethod('post', function () {
