@@ -17,13 +17,13 @@ function setup() {
             y: random(75, height - 75),
             width: random(100, 150),
             height: random(50, 100),
-            rotateSpeed: random(-2, 2),
-            textRotate: true, // random(360), or //false,
+            rotateSpeed: random(-1, 1),
             fillColor: randHexColor(),
             strokeColor: "#fff9",
             cornerRadius: random(100),
             text: random(["Hoàng", "Hiền", "Hương", "Nam", "Linh", "Hợp"]) + " - " + group,
-            textSize: 20
+            textSize: 20,
+            textRotate: true // random(360) or //false
         });
 
         box.onHover = function () {
@@ -34,9 +34,13 @@ function setup() {
         }
         box.onPress = function() {
             this.textSize = 18;
+            this.width -= 10;
+            this.height -= 10;
         }
         box.onRelease = function() {
             this.textSize = 20;
+            this.width += 10;
+            this.height += 10;
         }
 
         boxes.push(box);
