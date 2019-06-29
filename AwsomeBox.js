@@ -29,7 +29,8 @@ class AwsomeBox {
             textFill = invertColor(fillColor, true),
             textStroke = "#fff",
             textStrokeWeight = 0,
-            textSize = 16
+            textSize = 16,
+            textRotate = true
         } = config;
 
         this.group = group;
@@ -48,6 +49,7 @@ class AwsomeBox {
         this.textStroke = textStroke;
         this.textStrokeWeight = textStrokeWeight
         this.textSize = textSize;
+        this.textRotate = textRotate;
 
         if (AwsomeGroups[group]) {
             AwsomeGroups[group].add(this);
@@ -83,7 +85,12 @@ class AwsomeBox {
         rect(0, 0, this.width, this.height, this.cornerRadius);
 
         if (this.text) {
-            // rotate(-radians(this.angle));
+            if (this.textRotate === false) {
+                rotate(-radians(this.angle));
+            } else if (this.textRotate !== true) {
+                rotate(-radians(this.angle));
+                rotate(this.textRotate);
+            }
             strokeWeight(this.textStrokeWeight);
             stroke(this.textStroke)
             fill(this.textFill);
