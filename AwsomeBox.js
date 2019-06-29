@@ -55,6 +55,7 @@ class AwsomeBox {
             AwsomeGroups[group].add(this);
         } else {
             AwsomeGroups[group] = new AwsomeGroup({
+                id: group,
                 boxes: [this]
             });
             console.log(AwsomeGroups[group]);
@@ -124,9 +125,11 @@ class AwsomeBox {
 class AwsomeGroup {
     constructor(config = {}) {
         const {
+            id = "",
             boxes = []
         } = config;
 
+        this.id = id;
         this.boxes = boxes;
         this.mouseWasPressed = false;
         this.lastHovered = null;
