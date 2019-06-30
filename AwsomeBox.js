@@ -350,7 +350,7 @@ class AwsomeGroup {
 
 const AwsomeShapeFuncs = {
     // http://p5js.org/examples/form-star.html
-    createStarVertices(x, y, radius1, radius2, npoints) {
+    createVertices_Star(x, y, radius1, radius2, npoints) {
         let vertices = [];
         let angle = TWO_PI / npoints;
         let halfAngle = angle / 2.0;
@@ -358,13 +358,24 @@ const AwsomeShapeFuncs = {
         for (let a = 0; a < TWO_PI; a += angle) {
             let sx = x + cos(a) * radius2;
             let sy = y + sin(a) * radius2;
-            vertices.push({ x: sx, y: sy })
+            vertices.push({ x: sx, y: sy });
 
             sx = x + cos(a + halfAngle) * radius1;
             sy = y + sin(a + halfAngle) * radius1;
-            vertices.push({ x: sx, y: sy })
+            vertices.push({ x: sx, y: sy });
         }
 
+        return vertices;
+    },
+    // http://p5js.org/examples/form-regular-polygon.html
+    createVertices_Polygon(x, y, radius, npoints) {
+        let vertices = [];
+        let angle = TWO_PI / npoints;
+        for (let a = 0; a < TWO_PI; a += angle) {
+            let sx = x + cos(a) * radius;
+            let sy = y + sin(a) * radius;
+            vertices.push({ x: sx, y: sy });
+        }
         return vertices;
     },
     // http://jeffreythompson.org/collision-detection/table_of_contents.php

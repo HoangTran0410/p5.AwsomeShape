@@ -25,11 +25,18 @@ function setup() {
     addPictureBox();
     addAwsomeCircle();
     addAwsomePoly();
-    addAwsomePoly2();
+    addAwsomePolyStar();
+    addAwsomePolygon();
 }
 
 function draw() {
     background(240);
+
+    fill(100);
+    rect(width / 2, height - 100, width, 200);
+    fill(255);
+    textSize(20);
+    text("Other Shapes: ", 100, height - 180);
 
     for (let box of shapes) {
         box.run();
@@ -222,7 +229,7 @@ function addPictureBox() {
 function addAwsomeCircle() {
     let circle = new AwsomeCircle({
         x: 150,
-        y: 400,
+        y: 500,
         picture: circlePic,
         rotateSpeed: radians(1)
     })
@@ -267,7 +274,7 @@ function addAwsomePoly() {
     shapes.push(poly);
 }
 
-function addAwsomePoly2() {
+function addAwsomePolyStar() {
     // create AwsomePoly with vertices list
     let poly = new AwsomePoly({
         x: 300,
@@ -275,7 +282,30 @@ function addAwsomePoly2() {
         text: "Poly Star",
         fillColor: randHexColor(),
         rotateSpeed: radians(0.2),
-        vertices: AwsomeShapeFuncs.createStarVertices(0, 0, 30, 70, 5)
+        vertices: AwsomeShapeFuncs.createVertices_Star(0, 0, 30, 70, 5)
+    });
+
+    // add some event
+    poly.onHover = function () {
+        this.strokeWeight = 5;
+    }
+    poly.onOut = function () {
+        this.strokeWeight = 1;
+    }
+
+    // add poly to shapes
+    shapes.push(poly);
+}
+
+function addAwsomePolygon() {
+    // create AwsomePoly with vertices list
+    let poly = new AwsomePoly({
+        x: 700,
+        y: 500,
+        text: "Regular Polygon",
+        fillColor: randHexColor(),
+        rotateSpeed: radians(-0.2),
+        vertices: AwsomeShapeFuncs.createVertices_Polygon(0, 0, 75, 5)
     });
 
     // add some event
