@@ -1,5 +1,5 @@
 # 🖱 p5.AwsomeBox
-**p5.AwsomeBox** is a [p5.js](http://p5js.org) library, update from [p5.clickable](https://github.com/Lartu/p5.clickable) that lets you create and customize buttons and assign event based behaviours to them. Plain speaking, with **p5.AwsomeBox** you can create buttons and define what happens when the user *hovers over*, *clicks*, *releases*, *drag* or moves their cursor *out* of them.
+**p5.AwsomeBox** is a [p5.js](http://p5js.org) library, update from [p5.clickable](https://github.com/Lartu/p5.clickable) that lets you create and customize box (button) and assign event based behaviours to them. Plain speaking, with **p5.AwsomeBox** you can create buttons and define what happens when the user *hovers over*, *clicks*, *releases*, *drag* or moves their cursor *out* of them.
 
 ![image](https://github.com/HoangTran0410/p5.AwsomeBox/raw/master/images/Screenshot_1.png)
 
@@ -18,11 +18,12 @@ myButton.onPress = function(){      // When myButton is pressed
 Easy as pie!
 
 ## Required options
-**p5.AwsomeBox** require **2** options to work. Both of these options are p5js functions. Just put this to **setup** function of your project
+**p5.AwsomeBox** require **3** options to work. All of these options are p5js functions. Just put this to **setup** function of your sketch
 ```javascript
 function setup() {
     createCanvas(500, 500);
     ...
+    imageMode(CENTER);          // This option is use for center an picture of AwsomeBox
     rectMode(CENTER);           // This option is use for rotate and draw the AwsomeBox
     textAlign(CENTER, CENTER);  // This option is use for drawText CENTER of the AwsomeBox
     ...
@@ -77,6 +78,7 @@ myButton.strokeColor = "#fff";      // Border color - default is white
 myButton.strokeWeight = 1;          // Border width of myButton
 myButton.cornerRadius = 0;          // Corner radius
 myButton.draggable = true;          // If value is 'false', myButton can't be dragged
+myButton.picture = someImage;       // Picture to draw inside button, type of 'someImage' is p5.Image
 
 myButton.angle = 0;                 // Angle rotation of myButton
 myButton.rotateSpeed = 0;           // Angle changing speed
@@ -123,7 +125,7 @@ This is very important, for without this step your button will not be shown (nor
 
 AwsomeBox provide 5 methods that are called when the user interacts with the AwsomeBox in different ways.
 
-**onOut** is called whenever the cursor is outside the area of the AwsomeBox.
+**onOut** is called whenever the cursor is move to outside the area of the AwsomeBox.
 ```javascript
 myButton.onOut = function(){
   console.log("Hey! Cursor is out!");

@@ -1,9 +1,16 @@
 let boxes = [];
+let pic;
+
+function preload() {
+    pic = loadImage('../../images/subscribe.png');
+}
 
 function setup() {
     createCanvas(800, 600);
+    console.log(pic);
 
     // == AwsomeBox need this options ==
+    imageMode(CENTER);
     rectMode(CENTER);
     textAlign(CENTER, CENTER);
     // ==============================
@@ -15,6 +22,7 @@ function setup() {
     addRotateBoxes();
     addUnDraggableBox();
     addEventBox();
+    addPictureBox();
 }
 
 function draw() {
@@ -178,6 +186,26 @@ function addEventBox() {
         this.text = "Drag";
     }
     boxes.push(eventBox);
+}
+
+function addPictureBox() {
+    let box = new AwsomeBox({
+        x: 150,
+        y: 318,
+        width: 170,
+        height: 50,
+        strokeWeight: 0,
+        picture: pic
+    })
+
+    box.onPress = function() {
+        this.y += 5; 
+    }
+    box.onRelease = function() {
+        this.y -= 5; 
+    }
+
+    boxes.push(box);
 }
 
 // ============= OTHER FUNCTIONS ==============

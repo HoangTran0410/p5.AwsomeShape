@@ -20,6 +20,7 @@ class AwsomeBox {
             y = 0,
             width = 100,
             height = 50,
+            picture = null,
 
             fillColor = "#0000",
             strokeColor = "#fff",
@@ -43,6 +44,7 @@ class AwsomeBox {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.picture = picture;
         this.fillColor = fillColor;
         this.strokeColor = strokeColor;
         this.strokeWeight = strokeWeight;
@@ -105,7 +107,9 @@ class AwsomeBox {
         fill(this.fillColor);
         stroke(this.strokeColor);
         strokeWeight(this.strokeWeight);
+
         rect(0, 0, this.width, this.height, this.cornerRadius);
+        this.picture && image(this.picture, 0, 0, this.width, this.height);
 
         pop();
     }
