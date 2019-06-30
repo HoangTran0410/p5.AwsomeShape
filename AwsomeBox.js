@@ -237,27 +237,27 @@ class AwsomePoly extends AwsomeShape {
         push();
         translate(this.x, this.y);
         rotate(this.angle);
-        
+
         beginShape();
-        for(let v of this.vertices) {
+        for (let v of this.vertices) {
             vertex(v.x, v.y);
         }
         fill(this.fillColor);
         stroke(this.strokeColor);
         strokeWeight(this.strokeWeight);
         endShape(CLOSE);
-        
-        point(0, 0);
+
+        // point(0, 0);
 
         pop();
     }
 
     contain(x, y) {
         let vertices = [];
-        for(let v of this.vertices) {
+        for (let v of this.vertices) {
 
             let rotateV = createVector(v.x, v.y);
-            if(this.angle != 0) {
+            if (this.angle != 0) {
                 rotateV.rotate(this.angle);
             }
 
@@ -349,6 +349,25 @@ class AwsomeGroup {
 }
 
 const AwsomeShapeFuncs = {
+    // http://p5js.org/examples/form-star.html
+    createStarVertices(x, y, radius1, radius2, npoints) {
+        let vertices = [];
+        let angle = TWO_PI / npoints;
+        let halfAngle = angle / 2.0;
+
+        for (let a = 0; a < TWO_PI; a += angle) {
+            let sx = x + cos(a) * radius2;
+            let sy = y + sin(a) * radius2;
+            vertices.push({ x: sx, y: sy })
+
+            sx = x + cos(a + halfAngle) * radius1;
+            sy = y + sin(a + halfAngle) * radius1;
+            vertices.push({ x: sx, y: sy })
+        }
+
+        return vertices;
+    },
+    // http://jeffreythompson.org/collision-detection/table_of_contents.php
     collidePoint_RectRotated: function (px, py, rectX, rectY, rectW, rectH, rectAngle) {
         let rectPos = createVector(rectX, rectY);
         let pointPos = createVector(px, py);
