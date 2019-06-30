@@ -31,7 +31,7 @@ function setup() {
 ```
 
 ## Live Example
-[This example](https://hoangtran0410.github.io/p5.AwsomeShape/examples/basics) showcasts some of the main features of this library.
+[This example](https://hoangtran0410.github.io/p5.AwsomeShape/examples/basics) ([Source code](https://github.com/HoangTran0410/p5.AwsomeShape/tree/master/examples/basics)) showcasts some of the main features of this library.
 Its source code is available in the `examples` folder of this repository.
 
 ## How to Create a Button
