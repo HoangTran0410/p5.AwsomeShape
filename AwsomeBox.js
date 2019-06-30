@@ -173,13 +173,6 @@ class AwsomeGroup {
     update() {
         let mouse = createVector(mouseX, mouseY);
 
-        // outside event
-        // for (let box of this.boxes) {
-        //     if (box != this.lastHovered) {
-        //         box.onOut();
-        //     }
-        // }
-
         // mouseout event
         if(this.lastHovered != null && this.hovering != this.lastHovered) {
             this.lastHovered.onOut();
