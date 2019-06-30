@@ -153,8 +153,8 @@ class AwsomeRect extends AwsomeShape {
         this.height = height;
         this.cornerRadius = cornerRadius;
 
-        if(this.pictureWidth == 0) this.pictureWidth = width;
-        if(this.pictureHeight == 0) this.pictureHeight = height;
+        if (this.pictureWidth == 0) this.pictureWidth = width;
+        if (this.pictureHeight == 0) this.pictureHeight = height;
     }
 
     drawShape() {
@@ -191,8 +191,8 @@ class AwsomeCircle extends AwsomeShape {
         super(config);
 
         this.radius = radius;
-        if(this.pictureWidth == 0) this.pictureWidth = radius * 2;
-        if(this.pictureHeight == 0) this.pictureHeight = radius * 2;
+        if (this.pictureWidth == 0) this.pictureWidth = radius * 2;
+        if (this.pictureHeight == 0) this.pictureHeight = radius * 2;
     }
 
     drawShape() {
