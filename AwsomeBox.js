@@ -22,8 +22,8 @@ class AwsomeBox {
             height = 50,
             picture = null,
 
-            fillColor = "#0000",
-            strokeColor = "#fff",
+            fillColor = "#fff0",
+            strokeColor = "#000",
             strokeWeight = 1,
             cornerRadius = 0,
             draggable = true,

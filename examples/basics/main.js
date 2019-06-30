@@ -7,7 +7,6 @@ function preload() {
 
 function setup() {
     createCanvas(800, 600);
-    console.log(pic);
 
     // == AwsomeBox need this options ==
     imageMode(CENTER);
@@ -26,7 +25,7 @@ function setup() {
 }
 
 function draw() {
-    background(20);
+    background(240);
 
     for (let box of boxes) {
         box.run();
@@ -146,12 +145,12 @@ function addTextBoxes() {
     }));
 
     boxes.push(new AwsomeBox({
-        text: 'textFill: "#ff0"',
+        text: 'textFill: "#f0f"',
         x: 87,
         y: 66,
         width: 140,
         height: 50,
-        textFill: "#ff0"
+        textFill: "#f0f"
     }));
 }
 
@@ -195,8 +194,16 @@ function addPictureBox() {
         width: 170,
         height: 50,
         strokeWeight: 0,
+        cornerRadius: 5,
         picture: pic
     })
+
+    box.onHover = function() {
+        this.strokeWeight = 3;
+    }
+    box.onOut = function() {
+        this.strokeWeight = 0;
+    }
 
     box.onPress = function() {
         this.y += 5; 
