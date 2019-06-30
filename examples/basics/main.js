@@ -1,44 +1,47 @@
-let boxes = [];
-let pic;
+let shapes = [];
+let pic, circlePic;
 
 function preload() {
     pic = loadImage('../../images/subscribe.png');
+    circlePic = loadImage('../../images/youtube_play_btn.png');
 }
 
 function setup() {
     createCanvas(800, 600);
 
-    // == AwsomeBox need this options ==
+    // == AwsomeRect need this options ==
     imageMode(CENTER);
     rectMode(CENTER);
     textAlign(CENTER, CENTER);
     // ==============================
 
-    // == Add examples box to boxes list ==
-    addFillStrokeBoxes();
-    addTextBoxes();
+    // == Add examples box to shapes list ==
+    addFillStrokeshapes();
+    addTextshapes();
     addCornerBox();
-    addRotateBoxes();
+    addRotateshapes();
     addUnDraggableBox();
     addEventBox();
     addPictureBox();
+    addAwsomeCircle();
+    addAwsomePoly();
 }
 
 function draw() {
     background(240);
 
-    for (let box of boxes) {
+    for (let box of shapes) {
         box.run();
     }
 
     showFrameRate(10, 10);
 }
 
-// ======================= EXAMPLES BOXES ==========================
+// ======================= EXAMPLES shapes ==========================
 
-function addFillStrokeBoxes() {
+function addFillStrokeshapes() {
     // ========= Fill Color ============
-    boxes.push(new AwsomeBox({
+    shapes.push(new AwsomeRect({
         text: "fillColor",
         x: 251,
         y: 218,
@@ -48,7 +51,7 @@ function addFillStrokeBoxes() {
     }));
 
     // ========= Stroke Color ============
-    boxes.push(new AwsomeBox({
+    shapes.push(new AwsomeRect({
         text: "strokeColor",
         x: 84,
         y: 220,
@@ -60,7 +63,7 @@ function addFillStrokeBoxes() {
 }
 
 function addCornerBox() {
-    boxes.push(new AwsomeBox({
+    shapes.push(new AwsomeRect({
         text: "cornerRadius",
         x: 700,
         y: 218,
@@ -72,7 +75,7 @@ function addCornerBox() {
 
 function addUnDraggableBox() {
     // default value of draggable is true
-    boxes.push(new AwsomeBox({
+    shapes.push(new AwsomeRect({
         text: "draggable: false",
         x: 693,
         y: 350,
@@ -82,9 +85,9 @@ function addUnDraggableBox() {
     }));
 }
 
-function addRotateBoxes() {
+function addRotateshapes() {
     // rotate animation with rotateSpeed
-    boxes.push(new AwsomeBox({
+    shapes.push(new AwsomeRect({
         text: "rotateSpeed",
         x: 416,
         y: 222,
@@ -93,7 +96,7 @@ function addRotateBoxes() {
         rotateSpeed: radians(1)
     }));
     // rotate with angle
-    boxes.push(new AwsomeBox({
+    shapes.push(new AwsomeRect({
         text: "angle:60",
         x: 558,
         y: 224,
@@ -104,8 +107,8 @@ function addRotateBoxes() {
     }));
 }
 
-function addTextBoxes() {
-    boxes.push(new AwsomeBox({
+function addTextshapes() {
+    shapes.push(new AwsomeRect({
         text: "textRotate:true",
         x: 518,
         y: 68,
@@ -115,7 +118,7 @@ function addTextBoxes() {
         textRotate: true
     }));
 
-    boxes.push(new AwsomeBox({
+    shapes.push(new AwsomeRect({
         text: "textRotate:false",
         x: 386,
         y: 76,
@@ -125,7 +128,7 @@ function addTextBoxes() {
         textRotate: false
     }));
 
-    boxes.push(new AwsomeBox({
+    shapes.push(new AwsomeRect({
         text: "textRotate: 45",
         x: 247,
         y: 71,
@@ -135,7 +138,7 @@ function addTextBoxes() {
         textRotate: radians(45)
     }));
 
-    boxes.push(new AwsomeBox({
+    shapes.push(new AwsomeRect({
         text: "textSize: 25",
         x: 678,
         y: 70,
@@ -144,7 +147,7 @@ function addTextBoxes() {
         textSize: 25
     }));
 
-    boxes.push(new AwsomeBox({
+    shapes.push(new AwsomeRect({
         text: 'textFill: "#f0f"',
         x: 87,
         y: 66,
@@ -155,7 +158,7 @@ function addTextBoxes() {
 }
 
 function addEventBox() {
-    let eventBox = new AwsomeBox({
+    let eventBox = new AwsomeRect({
         text: "Event",
         x: 412,
         y: 348,
@@ -179,16 +182,16 @@ function addEventBox() {
         this.width += 10;
         this.height += 10;
         this.fillColor = randHexColor();
-        this.textFill = AwsomeBoxFuncs.invertColor(this.fillColor, true);
+        this.textFill = AwsomeShapeFuncs.invertColor(this.fillColor, true);
     }
     eventBox.onDrag = function () {
         this.text = "Drag";
     }
-    boxes.push(eventBox);
+    shapes.push(eventBox);
 }
 
 function addPictureBox() {
-    let box = new AwsomeBox({
+    let box = new AwsomeRect({
         x: 150,
         y: 318,
         width: 170,
@@ -198,26 +201,74 @@ function addPictureBox() {
         picture: pic
     })
 
-    box.onHover = function() {
+    box.onHover = function () {
         this.strokeWeight = 3;
     }
-    box.onOut = function() {
+    box.onOut = function () {
         this.strokeWeight = 0;
     }
 
-    box.onPress = function() {
-        this.y += 5; 
+    box.onPress = function () {
+        this.y += 5;
     }
-    box.onRelease = function() {
-        this.y -= 5; 
+    box.onRelease = function () {
+        this.y -= 5;
     }
 
-    boxes.push(box);
+    shapes.push(box);
+}
+
+function addAwsomeCircle() {
+    let circle = new AwsomeCircle({
+        x: 150,
+        y: 400,
+        picture: circlePic,
+        rotateSpeed: radians(1)
+    })
+    circle.onHover = function () {
+        this.strokeWeight = 5;
+    }
+    circle.onOut = function () {
+        this.strokeWeight = 0;
+    }
+    shapes.push(circle);
+}
+
+function addAwsomePoly() {
+    // init vertices list
+    let verticesArr = [
+        {x: -50, y: -20},
+        {x: -20, y: -40},
+        {x: 50, y: -20},
+        {x: 100, y: 10},
+        {x: 50, y: 70}
+    ];
+
+    // create AwsomePoly with vertices list
+    let poly = new AwsomePoly({
+        x: 500,
+        y: 500,
+        text: "Poly",
+        fillColor: randHexColor(),
+        rotateSpeed: radians(-1),
+        vertices: verticesArr
+    });
+
+    // add some event
+    poly.onHover = function () {
+        this.strokeWeight = 5;
+    }
+    poly.onOut = function () {
+        this.strokeWeight = 1;
+    }
+
+    // add poly to shapes
+    shapes.push(poly);
 }
 
 // ============= OTHER FUNCTIONS ==============
 function showFrameRate(x, y) {
-    fill(255);
+    fill(0);
     noStroke();
     text(~~frameRate(), x, y);
 }

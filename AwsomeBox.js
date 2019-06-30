@@ -1,6 +1,6 @@
 let css = 'background: #111; color: #fff; font-size: 21px;';
 let css2 = 'background: #f55c; color: #fff; font-size: 21px;';
-console.log('%c p5.%c AwsomeBox %c https://github.com/HoangTran0410/p5.AwsomeBox', css, css2, '');
+console.log('%c p5.%c AwsomeShape %c https://github.com/HoangTran0410/p5.AwsomeBox', css, css2, '');
 
 // Global variable contain all groups
 let AwsomeGroups = {};
@@ -11,28 +11,27 @@ p5.prototype.registerMethod('post', function () {
     }
 });
 
-class AwsomeBox {
+class AwsomeShape {
     constructor(config = {}) {
         const {
             group = "default",
-
+            hide = false,
             x = 0,
             y = 0,
-            width = 100,
-            height = 50,
-            picture = null,
-
             fillColor = "#fff0",
             strokeColor = "#000",
             strokeWeight = 1,
-            cornerRadius = 0,
             draggable = true,
+
+            picture = null,
+            pictureWidth = 0,
+            pictureHeight = 0,
 
             angle = 0,
             rotateSpeed = 0,
 
             text = "",
-            textFill = AwsomeBoxFuncs.invertColor(fillColor, true),
+            textFill = AwsomeShapeFuncs.invertColor(fillColor, true),
             textStroke = "#fff",
             textStrokeWeight = 0,
             textSize = 16,
@@ -40,15 +39,15 @@ class AwsomeBox {
         } = config;
 
         this.group = group;
+        this.hide = hide;
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
         this.picture = picture;
+        this.pictureWidth = pictureWidth;
+        this.pictureHeight = pictureHeight;
         this.fillColor = fillColor;
         this.strokeColor = strokeColor;
         this.strokeWeight = strokeWeight;
-        this.cornerRadius = cornerRadius;
         this.draggable = draggable;
         this.angle = angle;
         this.rotateSpeed = rotateSpeed;
@@ -69,18 +68,11 @@ class AwsomeBox {
         }
     }
 
-    contain(x, y) {
-        return AwsomeBoxFuncs.collidePoint_RectRotated(
-            x, y,
-            this.x, this.y,
-            this.width, this.height,
-            this.angle
-        );
-    }
-
     run() {
-        this.draw();
-        this.checkMouse();
+        if (!this.hide) {
+            this.draw();
+            this.checkMouse();
+        }
     }
 
     locate(x, y) {
@@ -88,30 +80,22 @@ class AwsomeBox {
         this.y = y;
     }
 
-    resize(w, h) {
-        this.width = w;
-        this.height = h;
-    }
-
     draw() {
-        this.drawBox();
+        this.drawShape();
         this.drawText();
         this.angle += this.rotateSpeed;
     }
 
-    drawBox() {
-        push();
-        translate(this.x, this.y);
-        rotate(this.angle);
+    drawShape() {
+        if (this.picture) {
+            push();
+            translate(this.x, this.y);
+            rotate(this.angle);
 
-        fill(this.fillColor);
-        stroke(this.strokeColor);
-        strokeWeight(this.strokeWeight);
+            image(this.picture, 0, 0, this.pictureWidth, this.pictureHeight);
 
-        rect(0, 0, this.width, this.height, this.cornerRadius);
-        this.picture && image(this.picture, 0, 0, this.width, this.height);
-
-        pop();
+            pop();
+        }
     }
 
     drawText() {
@@ -136,8 +120,8 @@ class AwsomeBox {
         if (this.contain(mouseX, mouseY)) {
             let group = AwsomeGroups[this.group];
             group.hovering = this;
-            
-            if(group.lastHovered == null) 
+
+            if (group.lastHovered == null)
                 group.lastHovered = this;
 
             if (mouseIsPressed && !group.mouseWasPressed) {
@@ -146,11 +130,144 @@ class AwsomeBox {
         }
     }
 
+    contain(x, y) { }
+
     onHover() { }
     onOut() { }
     onPress() { }
     onRelease() { }
     onDrag() { }
+}
+
+class AwsomeRect extends AwsomeShape {
+    constructor(config = {}) {
+        const {
+            width = 100,
+            height = 50,
+            cornerRadius = 0
+        } = config;
+
+        super(config);
+
+        this.width = width;
+        this.height = height;
+        this.cornerRadius = cornerRadius;
+
+        if(this.pictureWidth == 0) this.pictureWidth = width;
+        if(this.pictureHeight == 0) this.pictureHeight = height;
+    }
+
+    drawShape() {
+        push();
+        translate(this.x, this.y);
+        rotate(this.angle);
+
+        fill(this.fillColor);
+        stroke(this.strokeColor);
+        strokeWeight(this.strokeWeight);
+
+        rect(0, 0, this.width, this.height, this.cornerRadius);
+        this.picture && image(this.picture, 0, 0, this.pictureWidth, this.pictureHeight);
+
+        pop();
+    }
+
+    contain(x, y) {
+        return AwsomeShapeFuncs.collidePoint_RectRotated(
+            x, y,
+            this.x, this.y,
+            this.width, this.height,
+            this.angle
+        );
+    }
+}
+
+class AwsomeCircle extends AwsomeShape {
+    constructor(config = {}) {
+        const {
+            radius = 50,
+        } = config;
+
+        super(config);
+
+        this.radius = radius;
+        if(this.pictureWidth == 0) this.pictureWidth = radius * 2;
+        if(this.pictureHeight == 0) this.pictureHeight = radius * 2;
+    }
+
+    drawShape() {
+        push();
+        translate(this.x, this.y);
+
+        fill(this.fillColor);
+        stroke(this.strokeColor);
+        strokeWeight(this.strokeWeight);
+
+        ellipse(0, 0, this.radius * 2);
+
+        if (this.picture) {
+            rotate(this.angle);
+            image(this.picture, 0, 0, this.pictureWidth, this.pictureHeight);
+        }
+
+        pop();
+    }
+
+    contain(x, y) {
+        return AwsomeShapeFuncs.collidePoint_Circle(
+            x, y,
+            this.x, this.y,
+            this.radius
+        );
+    }
+}
+
+class AwsomePoly extends AwsomeShape {
+    constructor(config = {}) {
+        const {
+            vertices = []
+        } = config;
+
+        super(config);
+
+        this.vertices = vertices;
+    }
+
+    drawShape() {
+        push();
+        translate(this.x, this.y);
+        rotate(this.angle);
+        
+        beginShape();
+        for(let v of this.vertices) {
+            vertex(v.x, v.y);
+        }
+        fill(this.fillColor);
+        stroke(this.strokeColor);
+        strokeWeight(this.strokeWeight);
+        endShape(CLOSE);
+        
+        point(0, 0);
+
+        pop();
+    }
+
+    contain(x, y) {
+        let vertices = [];
+        for(let v of this.vertices) {
+
+            let rotateV = createVector(v.x, v.y);
+            if(this.angle != 0) {
+                rotateV.rotate(this.angle);
+            }
+
+            vertices.push({
+                x: rotateV.x + this.x,
+                y: rotateV.y + this.y
+            });
+        }
+        return AwsomeShapeFuncs.collidePoint_Poly(x, y, vertices);
+    }
 }
 
 // ==================== PRIVATE =====================
@@ -178,7 +295,7 @@ class AwsomeGroup {
         let mouse = createVector(mouseX, mouseY);
 
         // mouseout event
-        if(this.lastHovered != null && this.hovering != this.lastHovered) {
+        if (!mouseIsPressed && this.lastHovered != null && this.hovering != this.lastHovered) {
             this.lastHovered.onOut();
             this.lastHovered = this.hovering;
         }
@@ -196,13 +313,6 @@ class AwsomeGroup {
 
             let position = createVector(this.lastClicked.x, this.lastClicked.y);
             this.offsetClicked = p5.Vector.sub(position, mouse);
-
-            // move to front - bug
-            // let index = this.boxes.indexOf(this.lastClicked);
-            // let end = this.boxes.length - 1;
-            // this.boxes.swap(index, end);
-
-            // console.log(index, end);
         }
 
         // release event
@@ -217,7 +327,7 @@ class AwsomeGroup {
         if (this.mouseWasPressed && mouseIsPressed && this.lastClicked != null) {
             if (this.lastClicked.draggable) {
                 if (abs(mouseX - pmouseX) > 0 || abs(mouseY - pmouseY) > 0) {
-                    
+
                     let newPosition = p5.Vector.add(mouse, this.offsetClicked);
                     this.lastClicked.locate(newPosition.x, newPosition.y);
 
@@ -227,7 +337,6 @@ class AwsomeGroup {
         }
 
         // reset value
-        // this.lastHovered = null;
         this.hovering = null;
         this.mouseWasPressed = mouseIsPressed;
     }
@@ -239,7 +348,7 @@ class AwsomeGroup {
     }
 }
 
-const AwsomeBoxFuncs = {
+const AwsomeShapeFuncs = {
     collidePoint_RectRotated: function (px, py, rectX, rectY, rectW, rectH, rectAngle) {
         let rectPos = createVector(rectX, rectY);
         let pointPos = createVector(px, py);
@@ -254,6 +363,36 @@ const AwsomeBoxFuncs = {
             rotatedPos.y < rectY + rectH * .5
         );
     },
+    collidePoint_Circle: function (px, py, cirX, cirY, cirRadius) {
+        return dist(px, py, cirX, cirY) < cirRadius;
+    },
+    collidePoint_Poly(px, py, vertices) {
+        let collision = false;
+
+        // go through each of the vertices, plus the next
+        // vertex in the list
+        let next = 0;
+        for (let current = 0; current < vertices.length; current++) {
+
+            // get next vertex in list
+            // if we've hit the end, wrap around to 0
+            next = current + 1;
+            if (next == vertices.length) next = 0;
+
+            // get the PVectors at our current position
+            // this makes our if statement a little cleaner
+            let vc = vertices[current];    // c for "current"
+            let vn = vertices[next];       // n for "next"
+
+            // compare position, flip 'collision' variable
+            // back and forth
+            if (((vc.y > py && vn.y < py) || (vc.y < py && vn.y > py)) &&
+                (px < (vn.x - vc.x) * (py - vc.y) / (vn.y - vc.y) + vc.x)) {
+                collision = !collision;
+            }
+        }
+        return collision;
+    },
     // https://stackoverflow.com/questions/35969656/how-can-i-generate-the-opposite-color-according-to-current-color
     invertColor: function (hex, bw) {
         if (hex.indexOf('#') === 0) {
@@ -262,7 +401,7 @@ const AwsomeBoxFuncs = {
         // convert 3-digit hex to 6-digits.
         if (hex.length === 3 || hex.length === 4) {
             hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-        } else if(hex.length == 8) {
+        } else if (hex.length == 8) {
             hex = hex[0] + hex[1] + hex[2] + hex[3] + hex[4] + hex[5];
         } else if (hex.length !== 6) {
             console.error(`Invalid HEX color: ${hex}`)
