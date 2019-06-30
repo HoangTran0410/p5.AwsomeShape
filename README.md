@@ -17,6 +17,18 @@ myButton.onPress = function(){      // When myButton is pressed
 ```
 Easy as pie!
 
+## Required options
+**p5.AwsomeBox** require **2** options to work. Both of these options are p5js functions. Just put this to **setup** function of your project
+```
+function setup() {
+    createCanvas(500, 500);
+    ...
+    rectMode(CENTER);           // This option is use for rotate and draw the AwsomeBox
+    textAlign(CENTER, CENTER);  // This option is use for drawText CENTER of the AwsomeBox
+    ...
+}
+```
+
 ## Live Example
 [This example](https://hoangtran0410.github.io/p5.AwsomeBox/examples/basics) showcasts some of the main features of this library.
 Its source code is available in the `examples` folder of this repository.
@@ -28,7 +40,7 @@ Its source code is available in the `examples` folder of this repository.
 myButton = new AwsomeBox();
 ```
 
-The starting position of a Clickable defaults to (0, 0) and its size to (100, 50). You can create it at a different location:
+The starting position of a AwsomeBox defaults to (0, 0) and its size to (100, 50). You can create it at a different location:
 
 ```
 myButton = new AwsomeBox({
