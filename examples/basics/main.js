@@ -159,7 +159,7 @@ function addEventBox() {
     eventBox.onHover = function () {
         this.text = "Hover";
     }
-    eventBox.onOutside = function () {
+    eventBox.onOut = function () {
         this.text = "Outside";
     }
     eventBox.onPress = function () {

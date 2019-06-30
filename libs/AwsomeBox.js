@@ -19,7 +19,7 @@ class AwsomeBox {
             x = 0,
             y = 0,
             width = 100,
-            height = 100,
+            height = 50,
 
             fillColor = "#0000",
             strokeColor = "#fff",
@@ -81,6 +81,16 @@ class AwsomeBox {
         this.checkMouse();
     }
 
+    locate(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    resize(w, h) {
+        this.width = w;
+        this.height = h;
+    }
+
     draw() {
         this.drawBox();
         this.drawText();
@@ -133,7 +143,7 @@ class AwsomeBox {
     }
 
     onHover() { }
-    onOutside() { }
+    onOut() { }
     onPress() { }
     onRelease() { }
     onDrag() { }
@@ -166,13 +176,13 @@ class AwsomeGroup {
         // outside event
         // for (let box of this.boxes) {
         //     if (box != this.lastHovered) {
-        //         box.onOutside();
+        //         box.onOut();
         //     }
         // }
 
         // mouseout event
         if(this.lastHovered != null && this.hovering != this.lastHovered) {
-            this.lastHovered.onOutside();
+            this.lastHovered.onOut();
             this.lastHovered = this.hovering;
         }
 
@@ -212,8 +222,7 @@ class AwsomeGroup {
                 if (abs(mouseX - pmouseX) > 0 || abs(mouseY - pmouseY) > 0) {
                     
                     let newPosition = p5.Vector.add(mouse, this.offsetClicked);
-                    this.lastClicked.x = newPosition.x;
-                    this.lastClicked.y = newPosition.y;
+                    this.lastClicked.locate(newPosition.x, newPosition.y);
 
                     this.lastClicked.onDrag();
                 }
