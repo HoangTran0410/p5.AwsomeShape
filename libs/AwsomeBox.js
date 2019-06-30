@@ -21,8 +21,8 @@ class AwsomeBox {
             width = 100,
             height = 100,
 
-            fillColor = "#0000",
-            strokeColor = "#fff",
+            fillColor = "#00000000",
+            strokeColor = "#ffffff",
             strokeWeight = 1,
             cornerRadius = 0,
             draggable = true,
@@ -31,15 +31,16 @@ class AwsomeBox {
             rotateSpeed = 0,
 
             text = "",
-            textFill = invertColor(fillColor, true),
+            textFill = AwsomeBoxFuncs.invertColor(fillColor, true),
             textStroke = "#fff",
             textStrokeWeight = 0,
             textSize = 16,
-            textRotate = true
+            textRotate = false
         } = config;
 
         this.group = group;
-        this.position = createVector(x, y);
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
         this.fillColor = fillColor;
@@ -49,7 +50,7 @@ class AwsomeBox {
         this.draggable = draggable;
         this.angle = angle;
         this.rotateSpeed = rotateSpeed;
-        this.text = text;
+        this.text = text.toString();
         this.textFill = textFill;
         this.textStroke = textStroke;
         this.textStrokeWeight = textStrokeWeight
@@ -63,13 +64,13 @@ class AwsomeBox {
                 id: group,
                 boxes: [this]
             });
-            // console.log(AwsomeGroups[group]);
         }
     }
 
     contain(x, y) {
-        return collidePoint_RectRotated(x, y,
-            this.position.x, this.position.y,
+        return AwsomeBoxFuncs.collidePoint_RectRotated(
+            x, y,
+            this.x, this.y,
             this.width, this.height,
             this.angle
         );
@@ -81,20 +82,31 @@ class AwsomeBox {
     }
 
     draw() {
+        this.drawBox();
+        this.drawText();
+        this.angle += this.rotateSpeed;
+    }
+
+    drawBox() {
+        push();
+        translate(this.x, this.y);
+        rotate(this.angle);
+
         fill(this.fillColor);
         stroke(this.strokeColor);
         strokeWeight(this.strokeWeight);
-
-        push();
-        translate(this.position.x, this.position.y);
-        rotate(radians(this.angle));
         rect(0, 0, this.width, this.height, this.cornerRadius);
 
-        if (this.text) {
-            if (this.textRotate === false) {
-                rotate(-radians(this.angle));
-            } else if (this.textRotate !== true) {
-                rotate(-radians(this.angle));
+        pop();
+    }
+
+    drawText() {
+        if (this.text != "") {
+            push();
+            translate(this.x, this.y);
+            if (this.textRotate === true) {
+                rotate(this.angle);
+            } else if (this.textRotate !== false) {
                 rotate(this.textRotate);
             }
             strokeWeight(this.textStrokeWeight);
@@ -102,16 +114,17 @@ class AwsomeBox {
             fill(this.textFill);
             textSize(this.textSize);
             text(this.text, 0, 0);
+            pop();
         }
-        pop();
-
-        this.angle += this.rotateSpeed;
     }
 
     checkMouse() {
         if (this.contain(mouseX, mouseY)) {
             let group = AwsomeGroups[this.group];
-            group.lastHovered = this;
+            group.hovering = this;
+            
+            if(group.lastHovered == null) 
+                group.lastHovered = this;
 
             if (mouseIsPressed && !group.mouseWasPressed) {
                 group.lastClicked = this;
@@ -138,6 +151,7 @@ class AwsomeGroup {
         this.boxes = boxes;
         this.mouseWasPressed = false;
         this.lastHovered = null;
+        this.hovering = null;
         this.lastClicked = null;
         this.offsetClicked = null;
     }
@@ -150,10 +164,16 @@ class AwsomeGroup {
         let mouse = createVector(mouseX, mouseY);
 
         // outside event
-        for (let box of this.boxes) {
-            if (box != this.lastHovered) {
-                box.onOutside();
-            }
+        // for (let box of this.boxes) {
+        //     if (box != this.lastHovered) {
+        //         box.onOutside();
+        //     }
+        // }
+
+        // mouseout event
+        if(this.lastHovered != null && this.hovering != this.lastHovered) {
+            this.lastHovered.onOutside();
+            this.lastHovered = this.hovering;
         }
 
         // hover event
@@ -166,7 +186,9 @@ class AwsomeGroup {
         // press event
         if (!this.mouseWasPressed && this.lastClicked != null) {
             this.lastClicked.onPress();
-            this.offsetClicked = p5.Vector.sub(this.lastClicked.position, mouse);
+
+            let position = createVector(this.lastClicked.x, this.lastClicked.y);
+            this.offsetClicked = p5.Vector.sub(position, mouse);
 
             // move to front - bug
             // let index = this.boxes.indexOf(this.lastClicked);
@@ -178,7 +200,7 @@ class AwsomeGroup {
 
         // release event
         if (this.mouseWasPressed && !mouseIsPressed && this.lastClicked != null) {
-            if (this.lastClicked == this.lastHovered) {
+            if (this.lastClicked == this.lastHovered || this.lastClicked != null) {
                 this.lastClicked.onRelease();
             }
             this.lastClicked = null;
@@ -187,15 +209,20 @@ class AwsomeGroup {
         // drag event
         if (this.mouseWasPressed && mouseIsPressed && this.lastClicked != null) {
             if (this.lastClicked.draggable) {
-                this.lastClicked.position = p5.Vector.add(mouse, this.offsetClicked);
                 if (abs(mouseX - pmouseX) > 0 || abs(mouseY - pmouseY) > 0) {
+                    
+                    let newPosition = p5.Vector.add(mouse, this.offsetClicked);
+                    this.lastClicked.x = newPosition.x;
+                    this.lastClicked.y = newPosition.y;
+
                     this.lastClicked.onDrag();
                 }
             }
         }
 
         // reset value
-        this.lastHovered = null;
+        // this.lastHovered = null;
+        this.hovering = null;
         this.mouseWasPressed = mouseIsPressed;
     }
 
@@ -206,55 +233,63 @@ class AwsomeGroup {
     }
 }
 
-function collidePoint_RectRotated(px, py, rectX, rectY, rectW, rectH, rectAngle) {
-    let rectPos = createVector(rectX, rectY);
-    let pointPos = createVector(px, py);
-    let subVec = p5.Vector.sub(pointPos, rectPos);
-    let rotatedVec = subVec.rotate(-radians(rectAngle));
-    let rotatedPos = p5.Vector.add(rectPos, rotatedVec);
+const AwsomeBoxFuncs = {
+    collidePoint_RectRotated: function (px, py, rectX, rectY, rectW, rectH, rectAngle) {
+        let rectPos = createVector(rectX, rectY);
+        let pointPos = createVector(px, py);
+        let subVec = p5.Vector.sub(pointPos, rectPos);
+        let rotatedVec = subVec.rotate(-rectAngle);
+        let rotatedPos = p5.Vector.add(rectPos, rotatedVec);
 
-    return (
-        rotatedPos.x > rectX - rectW * .5 &&
-        rotatedPos.x < rectX + rectW * .5 &&
-        rotatedPos.y > rectY - rectH * .5 &&
-        rotatedPos.y < rectY + rectH * .5
-    );
-}
+        return (
+            rotatedPos.x > rectX - rectW * .5 &&
+            rotatedPos.x < rectX + rectW * .5 &&
+            rotatedPos.y > rectY - rectH * .5 &&
+            rotatedPos.y < rectY + rectH * .5
+        );
+    },
+    // https://stackoverflow.com/questions/35969656/how-can-i-generate-the-opposite-color-according-to-current-color
+    invertColor: function (hex, bw) {
+        if (hex.indexOf('#') === 0) {
+            hex = hex.slice(1);
+        }
+        // convert 3-digit hex to 6-digits.
+        if (hex.length === 3 || hex.length === 4) {
+            hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+        } else if(hex.length == 8) {
+            hex = hex[0] + hex[1] + hex[2] + hex[3] + hex[4] + hex[5];
+        } else if (hex.length !== 6) {
+            console.error(`Invalid HEX color: ${hex}`)
+        }
+        var r = parseInt(hex.slice(0, 2), 16),
+            g = parseInt(hex.slice(2, 4), 16),
+            b = parseInt(hex.slice(4, 6), 16);
+        if (bw) {
+            // http://stackoverflow.com/a/3943023/112731
+            return (r * 0.299 + g * 0.587 + b * 0.114) > 186
+                ? '#000000'
+                : '#FFFFFF';
+        }
+        // invert color components
+        r = (255 - r).toString(16);
+        g = (255 - g).toString(16);
+        b = (255 - b).toString(16);
 
-// https://stackoverflow.com/questions/35969656/how-can-i-generate-the-opposite-color-according-to-current-color
-function invertColor(hex, bw) {
-    if (hex.indexOf('#') === 0) {
-        hex = hex.slice(1);
+        // pad each with zeros and return
+        return "#" + this.padZero(r) + this.padZero(g) + this.padZero(b);
+    },
+    padZero: function (str, len) {
+        len = len || 2;
+        var zeros = new Array(len).join('0');
+        return (zeros + str).slice(-len);
+    },
+    // https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+    uuidv4: function () {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        })
     }
-    // convert 3-digit hex to 6-digits.
-    if (hex.length === 3) {
-        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-    }
-    if (hex.length !== 6) {
-        console.error(`invalid: ${hex}`)
-        // throw new Error('Invalid HEX color.');
-    }
-    var r = parseInt(hex.slice(0, 2), 16),
-        g = parseInt(hex.slice(2, 4), 16),
-        b = parseInt(hex.slice(4, 6), 16);
-    if (bw) {
-        // http://stackoverflow.com/a/3943023/112731
-        return (r * 0.299 + g * 0.587 + b * 0.114) > 186
-            ? '#000000'
-            : '#FFFFFF';
-    }
-    // invert color components
-    r = (255 - r).toString(16);
-    g = (255 - g).toString(16);
-    b = (255 - b).toString(16);
-
-    // pad each with zeros and return
-    return "#" + padZero(r) + padZero(g) + padZero(b);
-}
-function padZero(str, len) {
-    len = len || 2;
-    var zeros = new Array(len).join('0');
-    return (zeros + str).slice(-len);
 }
 
 // https://stackoverflow.com/questions/4011629/swapping-two-items-in-a-javascript-array
@@ -267,10 +302,4 @@ Array.prototype.swap = function (indexA, indexB) {
     swapArrayElements(this, indexA, indexB);
 };
 
-// https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
+
