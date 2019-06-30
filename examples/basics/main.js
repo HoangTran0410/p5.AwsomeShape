@@ -25,6 +25,7 @@ function setup() {
     addPictureBox();
     addAwsomeCircle();
     addAwsomePoly();
+    addAwsomePoly2();
 }
 
 function draw() {
@@ -252,6 +253,29 @@ function addAwsomePoly() {
         fillColor: randHexColor(),
         rotateSpeed: radians(-1),
         vertices: verticesArr
+    });
+
+    // add some event
+    poly.onHover = function () {
+        this.strokeWeight = 5;
+    }
+    poly.onOut = function () {
+        this.strokeWeight = 1;
+    }
+
+    // add poly to shapes
+    shapes.push(poly);
+}
+
+function addAwsomePoly2() {
+    // create AwsomePoly with vertices list
+    let poly = new AwsomePoly({
+        x: 300,
+        y: 500,
+        text: "Poly Star",
+        fillColor: randHexColor(),
+        rotateSpeed: radians(0.2),
+        vertices: AwsomeShapeFuncs.createStarVertices(0, 0, 30, 70, 5)
     });
 
     // add some event
