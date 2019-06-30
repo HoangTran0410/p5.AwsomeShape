@@ -18,7 +18,7 @@ function setup() {
 }
 
 function draw() {
-    background(30);
+    background(20);
 
     for (let box of boxes) {
         box.run();
@@ -91,8 +91,9 @@ function addRotateBoxes() {
         x: 558,
         y: 224,
         width: 100,
-        height: 50,
-        angle: radians(60)
+        height: 70,
+        angle: radians(60),
+        fillColor: "#abf"
     }));
 }
 
