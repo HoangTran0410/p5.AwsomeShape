@@ -5,7 +5,7 @@
 
 ## Code Example
 With **p5.AwsomeBox** and just a few lines of code you can get a button up and running. For example, to create a plain button at (20, 20) that when pressed changes color and shows an alert message you just do:
-``` 
+```javascript
 myButton = new AwsomeBox({          //Create button
     x: 20,
     y: 20
@@ -19,7 +19,7 @@ Easy as pie!
 
 ## Required options
 **p5.AwsomeBox** require **2** options to work. Both of these options are p5js functions. Just put this to **setup** function of your project
-```
+```javascript
 function setup() {
     createCanvas(500, 500);
     ...
@@ -36,13 +36,13 @@ Its source code is available in the `examples` folder of this repository.
 ## How to Create a Button
 
 **p5.AwsomeBox** provides the `AwsomeBox` class (aka, the buttons). To create a new button just instantiate a new AwsomeBox, like this:
-```
+```javascript
 myButton = new AwsomeBox();
 ```
 
 The starting position of a AwsomeBox defaults to (0, 0) and its size to (100, 50). You can create it at a different location:
 
-```
+```javascript
 myButton = new AwsomeBox({
     x: 200,
     y: 300
@@ -50,27 +50,27 @@ myButton = new AwsomeBox({
 ```
 
 To move a AwsomeBox you can change its `x` and `y` properties:
-```
+```javascript
 myButton.x = 100;
 myButton.y = 200;
 ```
 or use the `locate` method:
-```
+```javascript
 myButton.locate(100, 200);
 ```
 
 Likewise, to resize a Clickable you can modify its `width` and `height` properties:
-```
+```javascript
 myButton.width = 250;
 myButton.height = 100;
 ```
 or use the `resize` method:
-```
+```javascript
 myButton.resize(250, 100);
 ```
 
 AwsomeBox also contain other properties that can be changed to alter their appearance:
-```
+```javascript
 // All value below is default value
 myButton.fillColor = "#0000";       // Background color - default is transparent color
 myButton.strokeColor = "#fff";      // Border color - default is white
@@ -94,7 +94,7 @@ myButton.textRotate = false;        // Text rotation - default is false
 ```
 
 Or you can do it shorter:
-```
+```javascript
 myButton = new AwsomeBox({
     x: 200,
     y: 300,
@@ -112,7 +112,7 @@ myButton = new AwsomeBox({
 ```
 
 To **run** a AwsomeBox, you have to use its `run` method. For example:
-```
+```javascript
 function draw(){
   myButton.run();
 }
@@ -124,35 +124,35 @@ This is very important, for without this step your button will not be shown (nor
 AwsomeBox provide 5 methods that are called when the user interacts with the AwsomeBox in different ways.
 
 **onOut** is called whenever the cursor is outside the area of the AwsomeBox.
-```
+```javascript
 myButton.onOut = function(){
   console.log("Hey! Cursor is out!");
 }
 ```
 
 **onHover** is called whenever the cursor is within the area of the AwsomeBox, but it's not being pressed:
-```
+```javascript
 myButton.onHover = function(){
   console.log("The cursor is over me!");
 }
 ```
 
 **onPress** is called when the user presses a AwsomeBox.
-```
+```javascript
 myButton.onPress = function(){
   console.log("I've been pressed!");
 }
 ```
 
 **onRelease** is called whenever the user clicks a AwsomeBox and then releases the click.
-```
+```javascript
 myButton.onRelease = function(){
   console.log("Bye bye!");
 }
 ```
 
 Finally, **onDrag** is called whenever the user clicks a AwsomeBox and then drag it around.
-```
+```javascript
 myButton.onDrag = function(){
   console.log("Dragging...");
 }
