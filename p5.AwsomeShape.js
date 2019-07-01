@@ -8,9 +8,9 @@ let AwsomeGroups = {};
 // Global constant contain all AwsomeShape methods
 const AwsomeShape = {
     init: function (sketch) {
-        sketch.imageMode(CENTER);
-        sketch.rectMode(CENTER);
-        sketch.textAlign(CENTER, CENTER);
+        imageMode(CENTER);
+        rectMode(CENTER);
+        textAlign(CENTER, CENTER);
 
         sketch.registerMethod('post', function () {
             for (let ag in AwsomeGroups) {
