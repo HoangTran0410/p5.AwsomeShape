@@ -4,7 +4,7 @@
 ![image](https://github.com/HoangTran0410/p5.AwsomeShape/raw/master/images/Screenshot_1.png)
 
 ## Live Example
-[This Example](https://hoangtran0410.github.io/p5_Examples_Live/p5.AwsomeShape/) ([Source code](https://github.com/HoangTran0410/p5.AwsomeShape/tree/master/examples/basics)) showcasts some of the main features of this library.
+[This Example](https://hoangtran0410.github.io/p5_Examples_Live/p5.AwsomeShape/) ([Source code](https://github.com/HoangTran0410/p5_Examples_Live/tree/master/p5.AwsomeShape)) showcasts some of the main features of this library.
 
 ## Code Example
 With **p5.AwsomeShape** and just a few lines of code you can get a button up and running. For example, to create a plain button at (20, 20) that when pressed changes color and shows an alert message you just do:
@@ -76,6 +76,8 @@ myButton.strokeWeight = 1;          // Border width of myButton
 myButton.cornerRadius = 0;          // Corner radius
 myButton.draggable = true;          // If value is 'false', myButton can't be dragged
 myButton.picture = someImage;       // Picture to draw inside button, type of 'someImage' is p5.Image
+myButton.pictureWidth = 100;        // Change picture's size, default value is base on shape's size
+myButton.pictureHeight = 100;
 
 myButton.angle = 0;                 // Angle rotation of myButton
 myButton.rotateSpeed = 0;           // Angle changing speed
@@ -85,7 +87,7 @@ myButton.textFill = "#fff";         // Text color - default is inverted with fil
 myButton.textStroke = "#0000";      // Text border color - default is transparent
 myButton.textStrokeWeight = 0;      // Border width of text
 myButton.textSize = 16;             // Size of text
-myButton.textRotate = false;        // Text rotation - default is false
+myButton.textRotate = 0;        // Text rotation - default is false
 
 // With textRotate
 // If value is 'true' - text rotate with button's angle
