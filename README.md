@@ -3,6 +3,9 @@
 
 ![image](https://github.com/HoangTran0410/p5.AwsomeShape/raw/master/images/Screenshot_1.png)
 
+## Live Example
+[This Example](https://hoangtran0410.github.io/p5.AwsomeShape/examples/basics) ([Source code](https://github.com/HoangTran0410/p5.AwsomeShape/tree/master/examples/basics)) showcasts some of the main features of this library.
+
 ## Code Example
 With **p5.AwsomeShape** and just a few lines of code you can get a button up and running. For example, to create a plain button at (20, 20) that when pressed changes color and shows an alert message you just do:
 ```javascript
@@ -18,21 +21,15 @@ myButton.onPress = function(){      // When myButton is pressed
 Easy as pie!
 
 ## Required options
-**p5.AwsomeShape** require **3** options to work. All of these options are p5js functions. Just put this to **setup** function of your sketch
+**p5.AwsomeShape** require init() call in *setup* function
 ```javascript
 function setup() {
     createCanvas(500, 500);
     ...
-    imageMode(CENTER);          // This option is use for center an picture of AwsomeShape
-    rectMode(CENTER);           // This option is use for rotate and draw the AwsomeShape
-    textAlign(CENTER, CENTER);  // This option is use for drawText CENTER of the AwsomeShape
+    AwsomeShape.init(this);
     ...
 }
 ```
-
-## Live Example
-[This example](https://hoangtran0410.github.io/p5.AwsomeShape/examples/basics) ([Source code](https://github.com/HoangTran0410/p5.AwsomeShape/tree/master/examples/basics)) showcasts some of the main features of this library.
-Its source code is available in the `examples` folder of this repository.
 
 ## How to Create a Button
 
