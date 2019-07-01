@@ -4,7 +4,7 @@
 ![image](https://github.com/HoangTran0410/p5.AwsomeShape/raw/master/images/Screenshot_1.png)
 
 ## Live Example
-[This Example](https://hoangtran0410.github.io/p5.AwsomeShape/examples/basics) ([Source code](https://github.com/HoangTran0410/p5.AwsomeShape/tree/master/examples/basics)) showcasts some of the main features of this library.
+[This Example](https://hoangtran0410.github.io/p5_Examples_Live/p5.AwsomeShape/) ([Source code](https://github.com/HoangTran0410/p5.AwsomeShape/tree/master/examples/basics)) showcasts some of the main features of this library.
 
 ## Code Example
 With **p5.AwsomeShape** and just a few lines of code you can get a button up and running. For example, to create a plain button at (20, 20) that when pressed changes color and shows an alert message you just do:
