@@ -9,11 +9,7 @@ function preload() {
 function setup() {
     createCanvas(800, 600);
 
-    // == AwsomeRect need this options ==
-    imageMode(CENTER);
-    rectMode(CENTER);
-    textAlign(CENTER, CENTER);
-    // ==============================
+    AwsomeShape.init(this);
 
     // == Add examples box to shapes list ==
     addFillStrokeshapes();
@@ -27,6 +23,15 @@ function setup() {
     addAwsomePoly();
     addAwsomePolyStar();
     addAwsomePolygon();
+
+    // shapes.push(AwsomeShape.create({
+    //     shape: "polygon",
+    //     nPoint: 7,
+    //     size: 70,
+    //     rotateSpeed: radians(1),
+    //     x: 100,
+    //     y: 100
+    // }))
 }
 
 function draw() {
@@ -171,7 +176,8 @@ function addEventBox() {
         x: 412,
         y: 348,
         width: 140,
-        height: 50
+        height: 50,
+        draggable: false
     })
 
     eventBox.onHover = function () {
@@ -190,7 +196,7 @@ function addEventBox() {
         this.width += 10;
         this.height += 10;
         this.fillColor = randHexColor();
-        this.textFill = AwsomeShapeFuncs.invertColor(this.fillColor, true);
+        this.textFill = AwsomeShape.Tools.invertColor(this.fillColor, true);
     }
     eventBox.onDrag = function () {
         this.text = "Drag";
@@ -282,7 +288,7 @@ function addAwsomePolyStar() {
         text: "Poly Star",
         fillColor: randHexColor(),
         rotateSpeed: radians(0.2),
-        vertices: AwsomeShapeFuncs.createVertices_Star(0, 0, 30, 70, 5)
+        vertices: AwsomeShape.Tools.createVertices_Star(0, 0, 30, 70, 5)
     });
 
     // add some event
@@ -305,7 +311,7 @@ function addAwsomePolygon() {
         text: "Regular Polygon",
         fillColor: randHexColor(),
         rotateSpeed: radians(-0.2),
-        vertices: AwsomeShapeFuncs.createVertices_Polygon(0, 0, 75, 5)
+        vertices: AwsomeShape.Tools.createVertices_Polygon(0, 0, 75, 5)
     });
 
     // add some event
