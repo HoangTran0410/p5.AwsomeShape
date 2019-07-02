@@ -327,6 +327,12 @@ class AwsomeGroup {
                     this.lastClicked.locate(newPosition.x, newPosition.y);
 
                     this.lastClicked.onDrag();
+
+                    // swap to first
+                    let index = this.shapes.indexOf(this.lastClicked);
+                    if(index != this.shapes.length - 1) {
+                        this.shapes.swap(index, this.shapes.length - 1);
+                    }
                 }
             }
         }
