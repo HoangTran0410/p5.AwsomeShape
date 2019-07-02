@@ -329,10 +329,13 @@ class AwsomeGroup {
                     this.lastClicked.onDrag();
 
                     // swap to first
-                    let index = this.shapes.indexOf(this.lastClicked);
-                    if(index != this.shapes.length - 1) {
-                        this.shapes.swap(index, this.shapes.length - 1);
-                    }
+                    // let index = this.shapes.indexOf(this.lastClicked);
+                    // if(index != this.shapes.length - 1) {
+                    //     this.shapes.swap(index, this.shapes.length - 1);
+                    // }
+                    let lastIndex = this.shapes.length - 1;
+                    let first = this.lastClicked;
+                    this.shapes.sort(function (x, y) { return x == first ? 1 : y == first ? -1 : lastIndex; });
                 }
             }
         }
