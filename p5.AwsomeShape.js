@@ -266,6 +266,30 @@ const AwsomeShape = {
 }
 
 // ========================= CLASSES ========================
+class MyMouseEvent {
+    constructor(config = {}) {
+        this.mouseWasPressed = false;
+    }
+
+    update() {
+        this.mouseWasPressed = mouseIsPressed;
+    }
+
+    isPress() {
+        return !this.mouseWasPressed && mouseIsPressed;
+    }
+    isDown() {
+        return mouseIsPressed;
+    }
+    isRelease() {
+        return this.mouseWasPressed && !mouseIsPressed;
+    }
+    isDrag() {
+        let mouseChange = dist(pmouseX, pmouseY, mouseX, mouseY);
+        return this.mouseWasPressed && mouseIsPressed && mouseChange > 0;
+    }
+}
+
 class AwsomeGroup {
     constructor(config = {}) {
         const {
